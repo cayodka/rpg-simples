@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Embers and Ashes</title>
+  <link rel="shortcut icon" href="/assets/ashes.gif" type="image/x-icon" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      width: 100%;
+      height: 100vh;
+      background-image: url(/assets/14616.gif);
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
+      position: relative;
+      font-family: Arial, sans-serif;
+    }
+
+    #userStatus {
+      background-color: #3333339f;
+      background-image: url(/assets/ashes.gif);
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
+      color: black;
+      padding: 1rem;
+      border-radius: 8px;
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      width: 220px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    }
+
+    #userStatus h3 {
+      margin-bottom: 0.5rem;
+      font-size: 1rem;
+      text-align: center;
+    }
+
+    #playersList {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      min-height: 50px;
+    }
+
+    #playersList li {
+      margin-bottom: 0.3rem;
+      font-size: 0.9rem;
+    }
+
+    .action-button {
+      display: block;
+      width: 100%;
+      margin-top: 0.5rem;
+      padding: 0.4rem;
+      background-color: #333;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: background-color 0.3s;
+    }
+
+    .action-button:hover {
+      background-color: #555;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="userStatus">
+    <h3>Jogadores Online</h3>
+    <ul id="playersList">
+      <li>Carregando jogadores...</li>
+    </ul>
+    <button class="action-button" id="alterarContaBtn">Alterar Nome</button>
+    <button class="action-button" id="excluirContaBtn">Excluir Conta</button>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const playersList = document.getElementById("playersList");
+      const alterarContaBtn = document.getElementById("alterarContaBtn");
+      const excluirContaBtn = document.getElementById("excluirContaBtn");
+
+      let nomeAtual = localStorage.getItem("nomePlayer") || "";
+
+      async function carregarJogadoresOnline() {
+        playersList.innerHTML = "<li>Atualizando lista...</li>";
+
+        try {
+          const response = await fetch("/usuarios-online");
+          if (!response.ok) throw new Error("Resposta não OK");
+
+          const jogadoresOnline = await response.json();
+          playersList.innerHTML = "";
+
+          if (jogadoresOnline.length) {
+            jogadoresOnline.forEach(({ nome, classe }) => {
+              const listItem = document.createElement("li");
+              listItem.textContent = `${nome} / ${classe}`;
+              playersList.appendChild(listItem);
+              if (localStorage.getItem("nomePlayer") === nome) {
+                nomeAtual = nome;
+              }
+            });
+          } else {
+            playersList.innerHTML = "<li>Nenhum jogador online</li>";
+          }
+
+        } catch (error) {
+          console.error("Erro ao carregar jogadores online:", error);
+          playersList.innerHTML = "<li>Erro ao carregar jogadores</li>";
+        }
+      }
+
+      async function alterarNomeConta() {
+        const novoNome = prompt("Digite o novo nome:");
+        if (!novoNome || !novoNome.trim()) return;
+
+        try {
+          const response = await fetch("/alterar-nome", {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              nomeAntigo: nomeAtual,
+              novoNome: novoNome.trim()
+            }),
+          });
+
+          if (response.ok) {
+            alert("Nome alterado com sucesso!");
+            localStorage.setItem("nomePlayer", novoNome.trim());
+            nomeAtual = novoNome.trim();
+            carregarJogadoresOnline();
+          } else {
+            const erroTexto = await response.text();
+            console.error("Erro do servidor:", erroTexto);
+            alert("Erro ao alterar o nome " + erroTexto);
+          }
+        } catch (error) {
+          console.error("Erro ao alterar", error);
+          alert("Erro na requisição.");
+        }
+      }
+
+      async function excluirConta() {
+        if (!confirm("Tem certeza que deseja excluir?")) return;
+
+        try {
+          const response = await fetch("/excluir-conta", {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ nome: nomeAtual })
+          });
+
+          if (response.ok) {
+            alert("Conta excluída");
+            localStorage.removeItem("nomePlayer");
+            window.location.href = "/login";
+          } else {
+            const erroTexto = await response.text();
+            console.error("Erro do servidor:", erroTexto);
+            alert("Erro ao excluir a conta: " + erroTexto);
+          }
+        } catch (error) {
+          console.error("Erro ao excluir", error);
+          alert("Erro na requisição.");
+        }
+      }
+
+      alterarContaBtn.addEventListener("click", alterarNomeConta);
+      excluirContaBtn.addEventListener("click", excluirConta);
+
+      carregarJogadoresOnline();
+      setInterval(carregarJogadoresOnline, 3000);
+    });
+  </script>
+
+</body>
+
+</html>

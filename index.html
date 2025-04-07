@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Embers and Ashes</title>
+    <link rel="shortcut icon" href="/assets/ashes.gif" type="image/x-icon">
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div id="login">
+        <input type="text" id="loginName" placeholder="Digite seu nome">
+        <input type="password" id="loginPassword" placeholder="Digite sua senha">
+        <button id="Entrar">Entrar</button>
+        <button id="EntrarCriar">Criar Conta</button>
+    </div>
+    <div id="criarConta">
+        <input type="text" id="inputName" placeholder="Nome">
+        <input type="password" id="inputPassword" placeholder="Senha">
+        <input type="email" id="inputEmail" placeholder="Email">
+        <div class="dropdown">
+            <input type="text" id="dropdownInput" readonly placeholder="Selecione sua classe">
+            <div class="options" id="dropdownOptions">
+                <div onclick="selectOption('Guerreiro')">Guerreiro</div>
+                <div onclick="selectOption('Mago')">Mago</div>
+                <div onclick="selectOption('Bardo')">Bardo</div>
+            </div>
+        </div> 
+    <button id="enviarDados">Criar</button>
+    <button id="voltarLogin">Voltar</button>
+    </div>
+<script src="/main.js"></script>
+</body>
+</html>

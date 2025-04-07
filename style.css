@@ -1,0 +1,106 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    height: 100vh;
+    background-image: url(/assets/14616.gif);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#login {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    left: 15%;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 50px;
+    gap: 10px;
+    border-radius: 10px;
+    z-index: 2;
+}
+
+#login button {
+    height: 2rem;
+    width: 5rem;
+    background-color: red;
+    border-radius: 5px;
+    border: 1px solid rgb(0, 0, 0);
+}
+
+#criarConta {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 50px;
+    gap: 10px;
+    border-radius: 10px;
+    visibility: hidden;
+}
+
+#criarConta button{
+    height: 2rem;
+    width: 5rem;
+    background-color: red;
+    border-radius: 5px;
+    border: 1px solid rgb(0, 0, 0);
+}
+
+.dropdown {
+    position: relative;
+    width: 250px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+input {
+    width: 60%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: white;
+}
+
+.options {
+    position: absolute;
+    width: 100%;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-top: none;
+    visibility: hidden; 
+    z-index: 1;
+    border-radius: 5px;
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+.options div {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.options div:hover {
+    background-color: #f1f1f1;
+}
+
+#enviarDados {
+    height: 2rem;
+    width: 5rem;
+    background-color: red;
+    border-radius: 5px;
+    border: 1px solid rgb(0, 0, 0);
+}
