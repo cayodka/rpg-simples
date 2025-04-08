@@ -82,7 +82,7 @@
   <div id="userStatus">
     <h3>Jogadores Online</h3>
     <ul id="playersList">
-      <li>Carregando jogadores...</li>
+      <li>...</li>
     </ul>
     <button class="action-button" id="alterarContaBtn">Alterar Nome</button>
     <button class="action-button" id="excluirContaBtn">Excluir Conta</button>
@@ -156,7 +156,7 @@
       }
 
       async function excluirConta() {
-        if (!confirm("Tem certeza que deseja excluir?")) return;
+        if (!confirm("Tem certeza?")) return;
 
         try {
           const response = await fetch("/excluir-conta", {
@@ -168,7 +168,7 @@
           if (response.ok) {
             alert("Conta excluída");
             localStorage.removeItem("nomePlayer");
-            window.location.href = "/login";
+            window.location.href = "/index.html"; 
           } else {
             const erroTexto = await response.text();
             console.error("Erro do servidor:", erroTexto);

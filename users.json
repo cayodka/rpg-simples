@@ -1,32 +1,8 @@
 [
   {
-    "name": "cayo11",
-    "password": "11",
-    "email": "cayodka1212@gmail.com",
-    "classe": "Bardo"
-  },
-  {
-    "name": "2",
-    "password": "2",
+    "nome": "1",
+    "senha": "1",
     "email": "cayodka00@gmail.com",
-    "classe": "Guerreiro"
-  },
-  {
-    "nome": "1212",
-    "senha": "1212",
-    "email": "cayodka12@gmail.com",
-    "classe": "Guerreiro"
-  },
-  {
-    "nome": "2121",
-    "senha": "2121",
-    "email": "cayodka21@gmail.com",
-    "classe": "Mago"
-  },
-  {
-    "nome": "sheila",
-    "senha": "123",
-    "email": "cayodka0010@gmail.com",
     "classe": "Bardo"
   }
 ]

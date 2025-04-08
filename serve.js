@@ -85,6 +85,55 @@ const servidor = http.createServer((requisicao, resposta) => {
     return;
   }
 
+  if (method === "PUT" && url === "/alterar-nome") {
+    let corpo = "";
+    requisicao.on("data", pedaço => {
+      corpo += pedaço.toString();
+    });
+    requisicao.on("end", () => {
+      const { nomeAntigo, novoNome } = JSON.parse(corpo);
+
+      let usuarios = obterUsuarios();
+      const indiceUsuario = usuarios.findIndex(u => u.nome === nomeAntigo);
+
+      if (indiceUsuario === -1) {
+        resposta.writeHead(404, { "Content-Type": "text/plain" });
+        resposta.end("Usuário não encontrado.");
+        return;
+      }
+
+      usuarios[indiceUsuario].nome = novoNome;
+      fs.writeFileSync(arquivoUsuarios, JSON.stringify(usuarios, null, 2));
+
+      const indiceOnline = usuariosOnline.findIndex(u => u.nome === nomeAntigo);
+      if (indiceOnline !== -1) {
+        usuariosOnline[indiceOnline].nome = novoNome;
+      }
+
+      resposta.writeHead(200, { "Content-Type": "application/json" });
+      resposta.end(JSON.stringify({ success: true }));
+    });
+    return;
+  }
+
+  if (method === "DELETE" && url === "/excluir-conta") {
+    let corpo = "";
+    requisicao.on("data", pedaço => {
+      corpo += pedaço.toString();
+    });
+    requisicao.on("end", () => {
+      const { nome } = JSON.parse(corpo);
+      let usuarios = obterUsuarios();
+      usuarios = usuarios.filter(u => u.nome !== nome);
+      fs.writeFileSync(arquivoUsuarios, JSON.stringify(usuarios, null, 2));
+      usuariosOnline = usuariosOnline.filter(u => u.nome !== nome);
+
+      resposta.writeHead(200, { "Content-Type": "application/json" });
+      resposta.end(JSON.stringify({ success: true, message: "Conta excluída com sucesso." }));
+    });
+    return;
+  }
+
   if (method === "GET" && url === "/usuarios-online") {
     resposta.writeHead(200, { "Content-Type": "application/json" });
     resposta.end(JSON.stringify(usuariosOnline));
