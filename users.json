@@ -1,14 +1,20 @@
 [
   {
-    "nome": "1212",
+    "nome": "2",
     "senha": "1",
     "email": "cayodka00@gmail.com",
+    "classe": "Mago"
+  },
+  {
+    "nome": "1",
+    "senha": "2",
+    "email": "cayodka000@gmail.com",
     "classe": "Bardo"
   },
   {
-    "nome": "2",
+    "nome": "1212",
     "senha": "2",
-    "email": "cayodka0@gmail.com",
-    "classe": "Bardo"
+    "email": "cayodka1212@gmail.com",
+    "classe": "Guerreiro"
   }
 ]

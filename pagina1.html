@@ -80,7 +80,6 @@
       background-color: #555;
     }
 
-    /* Estilos da bola */
     #playerBall {
       position: absolute;
       width: 50px;
@@ -120,36 +119,49 @@
       let nomeAtual = localStorage.getItem("nomePlayer") || "";
       let ballPosition = { x: 200, y: 200 };
 
-      // Atualizar posição da bola na tela
+      const mapContainer = document.getElementById("mapContainer");
+
+    
       function updateBallPosition() {
+      
+        const mapWidth = mapContainer.offsetWidth;
+        const mapHeight = mapContainer.offsetHeight;
+
+        const ballWidth = playerBall.offsetWidth;
+        const ballHeight = playerBall.offsetHeight;
+
+      
+        ballPosition.x = Math.max(0, Math.min(ballPosition.x, mapWidth - ballWidth));
+        ballPosition.y = Math.max(0, Math.min(ballPosition.y, mapHeight - ballHeight));
+
         playerBall.style.left = `${ballPosition.x}px`;
         playerBall.style.top = `${ballPosition.y}px`;
       }
 
-      // Movimentar a bola com as teclas de seta
+    
       document.addEventListener("keydown", function (e) {
-        const step = 10; // Passo de movimentação da bola
+        const step = 10;
 
         switch (e.key) {
-          case 'ArrowUp': // Cima
+          case 'ArrowUp':
             ballPosition.y -= step;
             break;
-          case 'ArrowDown': // Baixo
+          case 'ArrowDown':
             ballPosition.y += step;
             break;
-          case 'ArrowLeft': // Esquerda
+          case 'ArrowLeft':
             ballPosition.x -= step;
             break;
-          case 'ArrowRight': // Direita
+          case 'ArrowRight':
             ballPosition.x += step;
             break;
         }
 
-        // Atualizar a posição da bola
+      
         updateBallPosition();
       });
 
-      // Carregar jogadores online
+    
       async function carregarJogadoresOnline() {
         playersList.innerHTML = "<li>Atualizando lista...</li>";
 
@@ -178,7 +190,7 @@
         }
       }
 
-      // Alterar nome de conta
+    
       async function alterarNomeConta() {
         const novoNome = prompt("Digite o novo nome:");
         if (!novoNome || !novoNome.trim()) return;
@@ -209,7 +221,7 @@
         }
       }
 
-      // Excluir conta
+    
       async function excluirConta() {
         if (!confirm("Tem certeza?")) return;
 
@@ -235,7 +247,7 @@
         }
       }
 
-      // Inicializar a página
+    
       alterarContaBtn.addEventListener("click", alterarNomeConta);
       excluirContaBtn.addEventListener("click", excluirConta);
 

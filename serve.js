@@ -83,7 +83,6 @@ const servidor = http.createServer((req, res) => {
       try {
         const { nome, classe } = JSON.parse(corpo);
 
-        // Verificar se o jogador já está online
         const jaOnline = usuariosOnline.some(
           usuario => usuario.nome === nome && usuario.classe === classe
         );
