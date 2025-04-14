@@ -1,1 +1,14 @@
-[]
+[
+  {
+    "nome": "1212",
+    "senha": "1",
+    "email": "cayodka00@gmail.com",
+    "classe": "Bardo"
+  },
+  {
+    "nome": "2",
+    "senha": "2",
+    "email": "cayodka0@gmail.com",
+    "classe": "Bardo"
+  }
+]

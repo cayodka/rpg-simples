@@ -22,6 +22,10 @@
       background-repeat: no-repeat;
       position: relative;
       font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
     }
 
     #userStatus {
@@ -75,6 +79,20 @@
     .action-button:hover {
       background-color: #555;
     }
+
+    /* Estilos da bola */
+    #playerBall {
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      background-color: red;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-weight: bold;
+    }
   </style>
 </head>
 
@@ -88,14 +106,50 @@
     <button class="action-button" id="excluirContaBtn">Excluir Conta</button>
   </div>
 
+  <div id="mapContainer">
+    <div id="playerBall">Nome</div>
+  </div>
+
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const playersList = document.getElementById("playersList");
       const alterarContaBtn = document.getElementById("alterarContaBtn");
       const excluirContaBtn = document.getElementById("excluirContaBtn");
+      const playerBall = document.getElementById("playerBall");
 
       let nomeAtual = localStorage.getItem("nomePlayer") || "";
+      let ballPosition = { x: 200, y: 200 };
 
+      // Atualizar posição da bola na tela
+      function updateBallPosition() {
+        playerBall.style.left = `${ballPosition.x}px`;
+        playerBall.style.top = `${ballPosition.y}px`;
+      }
+
+      // Movimentar a bola com as teclas de seta
+      document.addEventListener("keydown", function (e) {
+        const step = 10; // Passo de movimentação da bola
+
+        switch (e.key) {
+          case 'ArrowUp': // Cima
+            ballPosition.y -= step;
+            break;
+          case 'ArrowDown': // Baixo
+            ballPosition.y += step;
+            break;
+          case 'ArrowLeft': // Esquerda
+            ballPosition.x -= step;
+            break;
+          case 'ArrowRight': // Direita
+            ballPosition.x += step;
+            break;
+        }
+
+        // Atualizar a posição da bola
+        updateBallPosition();
+      });
+
+      // Carregar jogadores online
       async function carregarJogadoresOnline() {
         playersList.innerHTML = "<li>Atualizando lista...</li>";
 
@@ -118,13 +172,13 @@
           } else {
             playersList.innerHTML = "<li>Nenhum jogador online</li>";
           }
-
         } catch (error) {
           console.error("Erro ao carregar jogadores online:", error);
           playersList.innerHTML = "<li>Erro ao carregar jogadores</li>";
         }
       }
 
+      // Alterar nome de conta
       async function alterarNomeConta() {
         const novoNome = prompt("Digite o novo nome:");
         if (!novoNome || !novoNome.trim()) return;
@@ -155,6 +209,7 @@
         }
       }
 
+      // Excluir conta
       async function excluirConta() {
         if (!confirm("Tem certeza?")) return;
 
@@ -180,11 +235,14 @@
         }
       }
 
+      // Inicializar a página
       alterarContaBtn.addEventListener("click", alterarNomeConta);
       excluirContaBtn.addEventListener("click", excluirConta);
 
       carregarJogadoresOnline();
       setInterval(carregarJogadoresOnline, 3000);
+
+      updateBallPosition();
     });
   </script>
 
